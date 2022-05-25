@@ -1,3 +1,17 @@
+<?php
+$conexao = mysqli_connect('localhost','root','','aula1');
+$id = $_GET["id"];
+$registro = mysqli_query($conexao,"select * from tb_contatos where id = $id");
+$registroAlterar = mysqli_fetch_assoc($registro);
+if ($registroAlterar["sexo"]=='M'){
+    $sexoM = "checked";
+    $sexoF = "";
+}else {
+    $sexoF = "checked";
+    $sexoM = "";
+    
+}
+?>
 <html>
 
 <head>
@@ -13,7 +27,7 @@
                     Nome
                 </td>
                 <td>
-                    <input type="text" name="nome">
+                    <input type="text" name="nome" value="<?php echo $registroAlterar["nome"]; ?>">
                 </td>
                 
             </tr>
@@ -22,7 +36,7 @@
                     Email
                 </td>
                 <td>
-                    <input type="text" name="email">
+                    <input type="text" name="email" value="<?php echo $registroAlterar["email"]; ?>"> 
                 </td>
             </tr>
             <tr>
@@ -30,8 +44,8 @@
                     Sexo
                 </td>
                 <td>
-                    Masculino <input type="radio" name="sexo" value="M">
-                    Feminino <input type="radio" name="sexo" value="F">
+                    Masculino <input type="radio" name="sexo" value="M" <?php echo $sexoM; ?>>
+                    Feminino <input type="radio" name="sexo" value="F" <?php echo $sexoF; ?>>
                 </td>
             </tr>
             <tr>
@@ -42,7 +56,7 @@
         </table>
     </form>
     <?php
-          $conexao = mysqli_connect('localhost','root','','aula1');
+          
     if (isset($_POST['nome'])){
         $nome =$_POST["nome"];
         $email =$_POST["email"];
@@ -79,9 +93,6 @@
             echo '<td>'.$linha['email'].'</td>';
             echo '<td>'.$sexo.'</td>';
             echo '<td><a href="apagar.php?id='.$linha["id"].'">
-            <img src="apagar.png" width="32" height="32"
-            border="0"></a></td>';
-            echo '<td><a href="alterar.php?id='.$linha["id"].'">
             <img src="apagar.png" width="32" height="32"
             border="0"></a></td>';
             echo '</tr>';
